@@ -1,0 +1,5 @@
+node_modules/
+.taste-skill/
+shots/
+dist/
+.openai/
