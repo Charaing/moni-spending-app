@@ -29,3 +29,11 @@ test('백업 설정이 손상된 경우 복원하지 않는다',()=>{
  const settings={budgets:{},skippedRecurring:17};
  assert.equal(core.validBackup({version:1,records:[base],settings}),false);
 });
+
+test('저축 목표의 이름, 금액, 날짜가 유효해야 한다',()=>{
+ const goal={id:'g',name:'여행 자금',target:100000,saved:25000,deadline:'2027-03-31'};
+ assert.equal(core.validGoal(goal),true);
+ for(const patch of [{name:' '},{target:0},{saved:-1},{target:1.5},{deadline:'2027-02-30'}])assert.equal(core.validGoal({...goal,...patch}),false);
+ assert.equal(core.validBackup({version:1,records:[base],settings:{budgets:{},goals:[goal]}}),true);
+ assert.equal(core.validBackup({version:1,records:[base],settings:{budgets:{},goals:[goal,goal]}}),false);
+});
